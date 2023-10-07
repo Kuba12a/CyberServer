@@ -1,0 +1,6 @@
+uvicorn~=0.18.2
+fastapi~=0.79.0
+crypto~=1.4.1
+cryptography~=37.0.4
+pydantic~=1.9.2
+websockets~=10.4

